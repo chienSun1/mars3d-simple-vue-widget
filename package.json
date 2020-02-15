@@ -1,7 +1,7 @@
 {
   "name": "mars3d-simple-vue-widget",
   "version": "2.0.0",
-  "description": " Mars3D项目模版-Vue版（含widget模块）",
+  "description": " Mars3D基础项目模版（含widget模块）-Vue版",
   "main": "index.js",
   "keywords": [
     "marsgis",
@@ -38,7 +38,7 @@
   },
   "author": {
     "name": "火星科技",
-    "url": "https://www.marsgis.cn"
+    "url": "http://www.marsgis.cn"
   },
   "license": "ISC",
   "homepage": "https://github.com/marsgis/mars3d-simple-vue-widget"
