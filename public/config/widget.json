@@ -19,7 +19,12 @@
     "widgetsAtStart": [
         {
             "name": "右上角工具栏",
-            "uri": "widgets/toolBarRight/widget.js"            
+            "uri": "widgets/toolBarRight/widget.js",
+            "css":{
+                "top": "10px",
+                "left": "auto",
+                "right": "10px"
+            }          
         },
         {
             "name": "放大缩小工具按钮",
@@ -79,6 +84,9 @@
                             "bottom": 30,
                             "right": 10
                         }
+                    },
+                    "css":{
+                        "max-width":"300px"
                     },
                     "autoDisable": false,
                     "disableOther": false

@@ -30,10 +30,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
     //每个窗口创建完成后调用
     winCreateOK: function (viewopt, html) {
         if (viewopt.type != "append") return;
-
-        if (this.config.style)
-            $(".toolBarRight").css(this.config.style);
-
+ 
         var widgetObj = {};
         var that = this;
 
@@ -89,10 +86,10 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             if (mars3d.widget.isActivate(uri)) {
                 mars3d.widget.disable(uri);
             }
-            else {
+            else { 
                 var opt = widgetObj[uri] || {};
-                opt.uri = uri;
-
+                opt.uri = uri; 
+ 
                 mars3d.widget.activate(opt);
             }
         });

@@ -246,6 +246,17 @@
                     "format": "image/png"
                 },
                 "showClickFeature": true,
+                "pickFeatureStyle": {
+                    "showTime": 5000, 
+                    "clampToGround": true,
+                    "fill": true,
+                    "color": "#2deaf7",
+                    "opacity": 0.6,
+                    "outline": true,
+                    "outlineWidth": 3,
+                    "outlineColor": "#e000d9",
+                    "outlineOpacity": 1.0
+                },
                 "center": { "y": 31.79513, "x": 117.236172, "z": 3784.6, "heading": 0.7, "pitch": -42.2, "roll": 0 },
                 "popup": "all",
                 "visible": false,
@@ -323,9 +334,14 @@
                 "url": "http://data.marsgis.cn/arcgis/rest/services/mars/guihua/MapServer",
                 "showClickFeature": true,
                 "pickFeatureStyle": {
-                  "stroke": "#ff0000",
-                  "fill": "#ff0000",
-                  "fillAlpha": 0.5
+                    "showTime": 5000,  
+                    "fill": true,
+                    "color": "#2deaf7",
+                    "opacity": 0.6,
+                    "outline": true,
+                    "outlineWidth": 3,
+                    "outlineColor": "#e000d9",
+                    "outlineOpacity": 1.0
                 },
                 "center": { "y": 31.816951, "x": 117.22898, "z": 2916.7, "heading": 0.3, "pitch": -78.8, "roll": 0 },
                 "popup": [
@@ -616,9 +632,9 @@
                             "color": "#ffffff",
                             "border": true,
                             "border_color": "#000000",
-                            "pixelOffset": [ 0, -30 ],
+                            "pixelOffset": [0, -50],
                             "distanceDisplayCondition": true,
-                            "distanceDisplayCondition_far": 2000,
+                            "distanceDisplayCondition_far": 3000,
                             "distanceDisplayCondition_near": 0
                         }
                     },

@@ -145,7 +145,8 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
                 width: 3,
             },
             success: function (entity) { //绘制成功后回调  
-                var positions = entity.polyline.positions.getValue();
+                var currentTime = that.viewer.clock.currentTime;
+                var positions = entity.polyline.positions.getValue(currentTime);
                 that.sightline.add(positions[0], positions[1]);
 
                 that.createTsfxPoint(positions[0], true);
