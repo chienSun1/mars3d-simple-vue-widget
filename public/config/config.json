@@ -17,7 +17,8 @@
         "contextmenu":true,  
         "mouseZoom": true,
         "location": {
-            "format":"<div>经度:{x}</div> <div>纬度:{y}</div> <div>海拔：{z}米</div> <div>方向：{heading}度</div> <div>视高：{height}米</div>",
+            "fps":true,
+            "format":"<div>经度:{x}</div> <div>纬度:{y}</div> <div>海拔：{z}米</div> <div>方向：{heading}度</div> <div>俯仰角：{pitch}度</div>  <div>视高：{height}米</div>",
             "crs":""
         },
         "navigation": {
@@ -162,19 +163,39 @@
                 "pid": 60,
                 "type": "terrain",
                 "name": "官方全球地形",
-                "url": ""
-            },
+                "terrain": {
+                    "type": "ion"
+                },
+                "radio":true
+            },   
             {
                 "pid": 60,
                 "type": "terrain",
                 "name": "MarsGIS地形",
-                "url": "$serverURL$/terrain"
+                "terrain": {
+                    "type": "default",
+                    "url": "http://data.marsgis.cn/terrain"
+                },
+                "radio":true
+            },
+            {
+                "pid": 60,
+                "type": "terrain",
+                "name": "ArcGIS地形",
+                "terrain": {
+                    "type": "arcgis",
+                    "url": "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
+                },
+                "radio":true
             },
             {
                 "pid": 60,
                 "type": "terrain",
                 "name": "无地形",
-                "url": "ellipsoid"
+                "terrain": {
+                    "type": "ellipsoid"
+                },
+                "radio":true
             },
             {
                 "id": 50,
@@ -227,8 +248,7 @@
                 "parameters": {
                     "transparent": "true",
                     "format": "image/png"
-                },
-                "showClickFeature": true,
+                }, 
                 "center": { "y": 31.743214, "x": 117.277097, "z": 47197.7, "heading": 0.3, "pitch": -78.8, "roll": 360 },
                 "popup": "all",
                 "visible": false,
@@ -273,7 +293,7 @@
                     "transparent": "true",
                     "format": "image/png"
                 },
-                "showClickFeature": true,
+                "showClickFeature": false,
                 "center": { "y": 31.743214, "x": 117.277097, "z": 47197.7, "heading": 0.3, "pitch": -78.8, "roll": 360 },
                 "popup": "all",
                 "visible": false,
@@ -422,7 +442,7 @@
                         "outlineOpacity": 1,
                         "perPositionHeight": false,
                         "label": { 
-                            "field": "name", 
+                            "text": "{name}", 
                             "opacity": 1,
                             "font_size": 30,
                             "color": "#ffffff",
@@ -456,7 +476,7 @@
                         "width": 2,
                         "opacity": 0.8,
                         "label": {
-                            "field": "name",
+                            "text": "{name}",
                             "position":"center",
                             "font_size": 30,
                             "color": "#ffffff",
@@ -491,7 +511,7 @@
                         "scaleByDistance_near": 1000,
                         "scaleByDistance_nearValue": 1,
                         "label": {
-                            "field": "项目名称", 
+                            "text": "{项目名称}", 
                             "font_size": 25,
                             "color": "#ffffff",
                             "border": true,
@@ -586,7 +606,7 @@
                         "scaleByDistance_near": 1000,
                         "scaleByDistance_nearValue": 1,
                         "label": {
-                            "field": "项目名称",
+                            "text": "{项目名称}",
                             "font_size": 15,
                             "color": "#ffffff",
                             "border": true,
@@ -627,7 +647,7 @@
                         "scaleByDistance_near": 1000,
                         "scaleByDistance_nearValue": 1,
                         "label": {
-                            "field": "NAME",
+                            "text": "{NAME}",
                             "font_size": 15,
                             "color": "#ffffff",
                             "border": true,

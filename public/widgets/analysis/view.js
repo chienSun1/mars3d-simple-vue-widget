@@ -26,7 +26,7 @@ function initWidgetView(_thisWidget) {
 
 
     initRZFX()//日照分析
-    initTSFX()//通视分析
+    initPDPX()//坡度坡向
     initKSY()//可视域分析
 
     initFLFX()//方量分析
@@ -104,22 +104,23 @@ function setRZFXNowTime(date) {
     $("#lbl_rzfx_nowTime").html(date.format("MM月dd日 hh:mm"));
 }
 
-//=============通视分析=============
-function initTSFX() {
+//=============坡度坡向=============
+function initPDPX() {
 
-    $('#btn_goto_tsfx').click(function () {
-        thisWidget.createTSFX();
+    $('#btn_goto_pdpx').click(function () {
+        thisWidget.createPDPX();
     });
 
-    $('#btn_tsfx_destory').click(function () {
-        thisWidget.destroyTSFX();
+    $('#btn_pdpx_destory').click(function () {
+        thisWidget.destroyPDPX();
     });
-    $('#btn_tsfx_clear').click(function () {
-        thisWidget.clearTSFX();
+    $('#btn_pdpx_clear').click(function () {
+        thisWidget.clearPDPX();
     });
 
-    $('#btn_tsfx_drawLine').click(function () {
-        thisWidget.drawTSFXLine();
+    $('#btn_pdpx_drawLine').click(function () { 
+        var splitNum = Number($("#txt_pdpx_SplitNum").val());
+        thisWidget.drawPDPXLine(splitNum);
     });
 
 

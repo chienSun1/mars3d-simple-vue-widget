@@ -41,10 +41,6 @@
                 <span class="btn_none"> 日照分析 </span>
             </div>
 
-            <div id="btn_goto_tsfx" class="tool-btn">
-                <div class="tool-thum" style="background: #3de3f4;"><img src="img/tsfx.svg" alt="通视分析"></div>
-                <span class="btn_none"> 通视分析 </span>
-            </div>
 
             <div id="btn_goto_ksy" class="tool-btn">
                 <div class="tool-thum" style="background: #c092fe;"><img src="img/ksy.svg" alt="可视域"></div>
@@ -67,6 +63,10 @@
                 <span class="btn_none"> 地表透明 </span>
             </div>
 
+            <div id="btn_goto_pdpx" class="tool-btn">
+                <div class="tool-thum" style="background: #3de3f4;"><img src="img/pdpx.svg" alt="坡度坡向"></div>
+                <span class="btn_none"> 坡度坡向 </span>
+            </div>
 
             <div id="btn_goto_mxpq" class="tool-btn">
                 <div class="tool-thum" style="background: #37bc41;"><img src="img/mxpq.svg" alt="模型剖切">
@@ -130,31 +130,7 @@
             </div>
         </div>
     </div>
-    <!-- 通视分析 -->
-    <div id="tsAnal" class="mainbox">
-        <div class="headbox">
-            <div class="headtitle">
-                <i id="btn_tsfx_destory" class="fa fa-chevron-left backmenu"></i>
-                <span>通视分析</span>
-            </div>
-            <div id="btn_tsfx_clear" class="del">
-                <i class="fa fa-trash-o"></i>
-                <span>清除</span>
-            </div>
-        </div>
-        <div class="mainInfo">
 
-            <div class="rowview clearfix tip">
-                提示:单击按钮后在图上绘制分析的起止位置。
-            </div>
-
-            <div class="rowview clearfix center">
-                <input id="btn_tsfx_drawLine" type="button" class="btn btn-primary" value="通视分析" />
-            </div>
-
-        </div>
-    </div>
-    
     <!-- 可视域 -->
     <div id="ksyAnal" class="mainbox">
         <div class="headbox">
@@ -312,6 +288,34 @@
 
 
 
+
+        </div>
+    </div>
+
+    <!-- 坡度坡向 -->
+    <div id="tsAnal" class="mainbox">
+        <div class="headbox">
+            <div class="headtitle">
+                <i id="btn_pdpx_destory" class="fa fa-chevron-left backmenu"></i>
+                <span>坡度坡向</span>
+            </div>
+            <div id="btn_pdpx_clear" class="del">
+                <i class="fa fa-trash-o"></i>
+                <span>清除</span>
+            </div>
+        </div>
+        <div class="mainInfo">
+
+            <div class="rowview clearfix tip">
+                提示:单击按钮后在图上绘制区域。
+            </div>
+
+            <div class="rowview clearfix center">
+                插值数:
+                <input id="txt_pdpx_SplitNum" type="number" value="10" step="1" min="1" max="9999" class="form-control"
+                    style="width: 100px;" />
+                <input id="btn_pdpx_drawLine" type="button" class="btn btn-primary" value="绘制区域" />
+            </div>
 
         </div>
     </div>

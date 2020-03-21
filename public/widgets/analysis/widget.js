@@ -44,7 +44,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
 
     destroyAll: function () {
         this.destroyRZFX()//日照分析
-        this.destroyTSFX()//通视分析
+        this.destroyPDPX()//坡度坡向
         this.destroyKSY()//可视域分析
 
         this.destroyFLFX()//方量分析
@@ -56,7 +56,11 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
         this.destroyMXCJ()//模型裁剪 
     },
 
-
+    enableControl: function (value) {
+        this.viewer.mars.popup.enable = value;
+        this.viewer.mars.tooltip.enable = value;
+        this.viewer.mars.contextmenu.enable = value;
+    },
 
     //=========日照分析========
     createRZFX: function () {
@@ -106,84 +110,6 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
         return this.viewer.clock.shouldAnimate
     },
 
-    //=========通视分析========
-    createTSFX: function () {
-        if (this.sightline) return;
-        this.openTerrainDepthTest();
-
-        this.sightline = new mars3d.analysi.Sightline(this.viewer);
-    },
-    destroyTSFX: function () {
-        if (!this.sightline) return;
-        this.resetTerrainDepthTest();
-
-        this.clearTSFX();
-        this.sightline.destroy();
-        delete this.sightline;
-    },
-    clearTSFX: function () {
-        if (!this.sightline) return;
-
-        this.viewer.mars.draw.deleteAll();
-        this.sightline.clear();
-
-        for (var i = 0, len = this.arrTsfxPoint.length; i < len; i++) {
-            this.viewer.entities.remove(this.arrTsfxPoint[i]);
-        }
-        this.arrTsfxPoint = [];
-    },
-    drawTSFXLine: function () {
-        var that = this;
-        this.viewer.mars.draw.deleteAll();
-        this.viewer.mars.draw.startDraw({
-            type: "polyline",
-            config: {
-                maxPointNum: 2
-            },
-            style: {
-                color: "#55ff33",
-                width: 3,
-            },
-            success: function (entity) { //绘制成功后回调  
-                var currentTime = that.viewer.clock.currentTime;
-                var positions = entity.polyline.positions.getValue(currentTime);
-                that.sightline.add(positions[0], positions[1]);
-
-                that.createTsfxPoint(positions[0], true);
-                that.createTsfxPoint(positions[1], false);
-                that.viewer.mars.draw.deleteAll();
-            }
-        });
-    },
-    arrTsfxPoint: [],
-    createTsfxPoint: function (position, isFirst) {
-        var point = this.viewer.entities.add({
-            position: position,
-            point: {
-                color: new Cesium.Color.fromCssColorString("#3388ff"),
-                pixelSize: 6,
-                outlineColor: new Cesium.Color.fromCssColorString("#ffffff"),
-                outlineWidth: 2,
-                scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 8.0e6, 0.2),
-                disableDepthTestDistance: Number.POSITIVE_INFINITY,
-            },
-            label: {
-                text: isFirst ? "观察位置" : "目标点",
-                font: 'normal small-caps normal 17px 楷体',
-                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                fillColor: Cesium.Color.AZURE,
-                outlineColor: Cesium.Color.BLACK,
-                outlineWidth: 2,
-                horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
-                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -20),   //偏移量   
-                distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 2000000),
-                disableDepthTestDistance: Number.POSITIVE_INFINITY,
-            },
-        });
-        this.arrTsfxPoint.push(point);
-        return point;
-    },
 
     //=========可视域分析========
     createKSY: function () {
@@ -260,8 +186,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
     startDrawDXKW: function () {
         var that = this;
 
-        viewer.mars.popup.enable = false;
-        viewer.mars.tooltip.enable = false;
+        this.enableControl(false);
 
         viewer.mars.draw.startDraw({
             type: "polygon",
@@ -272,8 +197,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             },
             success: function (entity) { //绘制成功后回调
 
-                viewer.mars.popup.enable = true;
-                viewer.mars.tooltip.enable = true;
+                that.enableControl(true);
 
                 var positions = viewer.mars.draw.getPositions(entity);
                 viewer.mars.draw.deleteAll();
@@ -322,7 +246,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
         this.TerrainClip2 = new mars3d.analysi.TerrainClipPlan(viewer, {
             positions: positions,
             height: height,
-            wall: false, 
+            wall: false,
         });
 
 
@@ -373,12 +297,67 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
         }
     },
 
+    //=========坡度坡向========
+    createPDPX: function () {
+        if (this.slope) return;
+  
+        this.slope =  new mars3d.analysi.Slope({
+            viewer: this.viewer,
+            point: {
+                pixelSize: 9,
+                color: Cesium.Color.RED.withAlpha(0.5), 
+                //disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            },
+            arrow: {
+                scale: 0.3, //箭头长度的比例（范围0.1-0.9）
+                width: 15,  //箭头宽度
+                color: Cesium.Color.YELLOW
+            }
+        })
+
+    },
+    destroyPDPX: function () {
+        if (!this.slope) return;
+  
+        this.clearPDPX();
+        this.slope.destroy();
+        delete this.slope;
+    },
+    clearPDPX: function () {
+        if (!this.slope) return;
+
+        this.viewer.mars.draw.deleteAll();
+        this.slope.clear(); 
+    },
+    drawPDPXLine: function (splitNum) {
+        var that = this;
+        this.viewer.mars.draw.deleteAll();
+        this.viewer.mars.draw.startDraw({
+            "type": "polygon",
+            "style": {
+                "color": "#29cf34",
+                "opacity": 0.3,
+                "outline": true,
+                "outlineColor": "#ffffff",
+                "clampToGround": true
+            },
+            success: function (entity) { //绘制成功后回调  
+                var positions = that.viewer.mars.draw.getPositions(entity);
+                viewer.mars.draw.deleteAll()
+ 
+                that.slope.add(positions, {
+                    splitNum: splitNum  //splitNum插值分割的个数
+                });
+            }
+        });
+    }, 
+
+    
     //=========模型剖切======== 
     selectedPQMX: function () {
         var that = this;
 
-        viewer.mars.popup.enable = false;
-        viewer.mars.tooltip.enable = false;
+        this.enableControl(false);
 
         viewer.mars.draw.startDraw({
             type: "point",
@@ -390,8 +369,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
 
                 viewer.mars.draw.deleteAll();
 
-                viewer.mars.popup.enable = true;
-                viewer.mars.tooltip.enable = true;
+                that.enableControl(true);
 
                 var tileset = mars3d.tileset.pick3DTileset(viewer, positions);//拾取绘制返回的模型
                 if (!tileset) {
@@ -440,6 +418,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             style: {
                 color: "#007be6",
                 opacity: 0.5,
+                clampToGround: false
             },
             success: function (entity) { //绘制成功后回调
                 var positions = viewer.mars.draw.getPositions(entity);
@@ -482,6 +461,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             style: {
                 color: "#007be6",
                 opacity: 0.5,
+                clampToGround: false
             },
             success: function (entity) { //绘制成功后回调
                 var positions = viewer.mars.draw.getPositions(entity);
