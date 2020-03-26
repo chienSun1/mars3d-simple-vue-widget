@@ -225,9 +225,8 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
     showDXKWClippingPlanes: function (positions) {
         this.clearDXKW();
 
-        // //同时有模型时，进行模型裁剪
-        // this.addMxcjPoly(positions)   
-
+        //同时有模型时，进行模型裁剪
+        this.addMxcjPoly(positions)
 
         var height = this.viewWindow.getDXKWNowHeight();
 
@@ -300,12 +299,12 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
     //=========坡度坡向========
     createPDPX: function () {
         if (this.slope) return;
-  
-        this.slope =  new mars3d.analysi.Slope({
+
+        this.slope = new mars3d.analysi.Slope({
             viewer: this.viewer,
             point: {
                 pixelSize: 9,
-                color: Cesium.Color.RED.withAlpha(0.5), 
+                color: Cesium.Color.RED.withAlpha(0.5),
                 //disableDepthTestDistance: Number.POSITIVE_INFINITY,
             },
             arrow: {
@@ -318,7 +317,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
     },
     destroyPDPX: function () {
         if (!this.slope) return;
-  
+
         this.clearPDPX();
         this.slope.destroy();
         delete this.slope;
@@ -327,7 +326,7 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
         if (!this.slope) return;
 
         this.viewer.mars.draw.deleteAll();
-        this.slope.clear(); 
+        this.slope.clear();
     },
     drawPDPXLine: function (splitNum) {
         var that = this;
@@ -344,15 +343,15 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             success: function (entity) { //绘制成功后回调  
                 var positions = that.viewer.mars.draw.getPositions(entity);
                 viewer.mars.draw.deleteAll()
- 
+
                 that.slope.add(positions, {
                     splitNum: splitNum  //splitNum插值分割的个数
                 });
             }
         });
-    }, 
+    },
 
-    
+
     //=========模型剖切======== 
     selectedPQMX: function () {
         var that = this;
@@ -482,8 +481,9 @@ mars3d.widget.bindClass(mars3d.widget.BaseWidget.extend({
             return false;
         }
 
-        this.tilesetClip = new mars3d.tiles.TilesClip({
-            viewer: this.viewer,
+    
+        this.tilesetClip = new mars3d.tiles.TilesClipPlan({
+            // viewer: this.viewer,
             tileset: tileset,
             positions: positions,
             clipOutSide: clipOutSide
